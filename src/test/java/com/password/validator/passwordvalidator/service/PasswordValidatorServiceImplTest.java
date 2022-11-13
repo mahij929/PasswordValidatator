@@ -37,7 +37,7 @@ class PasswordValidatorServiceImplTest {
 
     @Test
     void validatePasswordFailDigit(){
-        String noDigitPassword = "hellooooo";
+        String noDigitPassword = "PasswordWithNoDigits";
 
         PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noDigitPassword);
 
@@ -49,7 +49,7 @@ class PasswordValidatorServiceImplTest {
 
     @Test
     void validatePasswordNoLowerCase(){
-        String noLowercasePassword = "HELL00000000";
+        String noLowercasePassword = "UPPERCASEPASSWORD";
 
         PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noLowercasePassword);
 
@@ -57,5 +57,29 @@ class PasswordValidatorServiceImplTest {
 
         assert (passwordResponse.getStatus().is4xxClientError());
         assert (passwordResponse.getMessage().contains("Password does not contain a lowercase character"));
+    }
+
+    @Test
+    void validatePasswordNoUppercase(){
+        String noUppercasePassword = "lowercasepassword";
+
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noUppercasePassword);
+
+        System.out.println(passwordResponse.toString());
+
+        assert (passwordResponse.getStatus().is4xxClientError());
+        assert (passwordResponse.getMessage().contains("Password does not contain a uppercase character"));
+    }
+
+    @Test
+    void validatePasswordNoUppercaseWithDigit(){
+        String noUppercasePasswordWithDigit = "l0wercase";
+
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noUppercasePasswordWithDigit);
+
+        System.out.println(passwordResponse.toString());
+
+        assert (passwordResponse.getStatus().is2xxSuccessful());
+        assert (passwordResponse.getMessage().contains("Password Accepted"));
     }
 }
