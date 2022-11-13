@@ -1,22 +1,26 @@
 package com.password.validator.passwordvalidator.service;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.password.validator.passwordvalidator.modal.PasswordResponse;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
 class PasswordValidatorServiceImplTest {
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
+    @Autowired
+    private PasswordValidatorServiceImpl passwordValidatorService;
 
     @Test
-    void validatePasswordService() {
+    void validatePasswordServiceLengthFail() {
+
+        String shortPassword = "sh0rt";
+
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(shortPassword);
+
+        System.out.println(passwordResponse);
+
+        assert (passwordResponse.getStatus().is4xxClientError());
+        assert (passwordResponse.getMessage().contains("Length of password is less or equal to 8."));
     }
 }
