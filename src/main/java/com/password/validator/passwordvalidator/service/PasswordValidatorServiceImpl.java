@@ -27,6 +27,9 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
         String lowercaseRegex = "^.*(?=.*[a-z])+.*$";
         Pattern lowercasePattern = Pattern.compile(lowercaseRegex);
 
+        String uppercaseRegex = "^.*(?=.*[A-Z])+.*$";
+        Pattern uppercasePattern = Pattern.compile(uppercaseRegex);
+
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         int counter = 0;
@@ -42,6 +45,11 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
                     logger.info("Length of password is less or equal to 8.");
                     jsonObject.put("counter", ++counter);
                     jsonArray.put("Length of password is less or equal to 8.");
+                }
+                if (!uppercasePattern.matcher(isValidPassword).matches()) {
+                    logger.info("Password does not contain a uppercase character");
+                    jsonObject.put("counter", ++counter);
+                    jsonArray.put("Password does not contain a uppercase character.");
                 }
                 if (!digitsPatter.matcher(isValidPassword).matches()) {
                     logger.info("Password does not contain digit.");
@@ -68,6 +76,11 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
 
             return passwordResponse;
         }
+
+        logger.info(String.valueOf(jsonObject.get("counter")));
+        logger.info(jsonObject.toString());
+
+        passwordResponse.setMessage("Password Accepted");
 
         return passwordResponse;
     }

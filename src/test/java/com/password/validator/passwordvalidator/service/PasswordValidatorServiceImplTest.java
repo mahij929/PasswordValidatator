@@ -37,7 +37,7 @@ class PasswordValidatorServiceImplTest {
 
     @Test
     void validatePasswordFailDigit(){
-        String noDigitPassword = "PasswordWithNoDigits";
+        String noDigitPassword = "passwordwithnodigits";
 
         PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noDigitPassword);
 
@@ -73,7 +73,7 @@ class PasswordValidatorServiceImplTest {
 
     @Test
     void validatePasswordNoUppercaseWithDigit(){
-        String noUppercasePasswordWithDigit = "l0wercase";
+        String noUppercasePasswordWithDigit = "l0wercasepassword";
 
         PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noUppercasePasswordWithDigit);
 
