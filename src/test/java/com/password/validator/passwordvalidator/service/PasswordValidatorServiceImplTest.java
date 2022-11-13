@@ -34,4 +34,16 @@ class PasswordValidatorServiceImplTest {
         assert (passwordResponse.getStatus().is4xxClientError());
         assert (passwordResponse.getMessage().contains("Password can not be empty"));
     }
+
+    @Test
+    void validatePasswordFailDigit(){
+        String noDigitPassword = "hellooooo";
+
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noDigitPassword);
+
+        System.out.println(passwordResponse.toString());
+
+        assert (passwordResponse.getStatus().is4xxClientError());
+        assert (passwordResponse.getMessage().contains("Password does not contain a digit"));
+    }
 }
