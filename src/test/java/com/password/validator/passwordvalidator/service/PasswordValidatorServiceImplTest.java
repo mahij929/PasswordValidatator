@@ -23,4 +23,15 @@ class PasswordValidatorServiceImplTest {
         assert (passwordResponse.getStatus().is4xxClientError());
         assert (passwordResponse.getMessage().contains("Length of password is less or equal to 8."));
     }
+
+    @Test
+    void validatePasswordServiceEmpty(){
+        String emptyPassword = "   ";
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(emptyPassword);
+
+        System.out.println(passwordResponse.toString());
+
+        assert (passwordResponse.getStatus().is4xxClientError());
+        assert (passwordResponse.getMessage().contains("Password can not be empty"));
+    }
 }

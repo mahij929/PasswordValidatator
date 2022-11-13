@@ -28,10 +28,16 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
         PasswordResponse passwordResponse = new PasswordResponse();
         passwordResponse.setStatus(HttpStatus.OK);
 
-        if(isValidPassword.length() <= 9 ){
-            logger.info("Size of password is : {}" , isValidPassword.length());
-            jsonObject.put("counter", ++counter);
-            jsonArray.put("Length of password is less or equal to 8.");
+        if(!(isValidPassword.trim()).isEmpty()) {
+            if (isValidPassword.length() <= 9) {
+                logger.info("Size of password is : {}", isValidPassword.length());
+                jsonObject.put("counter", ++counter);
+                jsonArray.put("Length of password is less or equal to 8.");
+            }
+        }else{
+            logger.info("Input is empty");
+            jsonObject.put("counter", 3);
+            jsonArray.put("Password can not be empty");
         }
 
         if(jsonArray.length()==0){
