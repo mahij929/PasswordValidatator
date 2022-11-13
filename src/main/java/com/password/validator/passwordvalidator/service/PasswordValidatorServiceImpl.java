@@ -24,6 +24,9 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
         String digitRegex = "^.*(?=.*[0-9])+.*$";
         Pattern digitsPatter = Pattern.compile(digitRegex);
 
+        String lowercaseRegex = "^.*(?=.*[a-z])+.*$";
+        Pattern lowercasePattern = Pattern.compile(lowercaseRegex);
+
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         int counter = 0;
@@ -34,14 +37,22 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
         passwordResponse.setStatus(HttpStatus.OK);
 
         if(!(isValidPassword.trim()).isEmpty()) {
-            if (isValidPassword.length() <= 9) {
-                logger.info("Size of password is : {}", isValidPassword.length());
-                jsonObject.put("counter", ++counter);
-                jsonArray.put("Length of password is less or equal to 8.");
-            }if (!digitsPatter.matcher(isValidPassword).matches()) {
-                logger.info("Digit Value {}" ,String.valueOf(digitsPatter.matcher(isValidPassword).matches()));
-                jsonObject.put("counter", ++counter);
-                jsonArray.put("Password does not contain a digit");
+            if (lowercasePattern.matcher(isValidPassword).matches()) {
+                if (isValidPassword.length() <= 9) {
+                    logger.info("Length of password is less or equal to 8.");
+                    jsonObject.put("counter", ++counter);
+                    jsonArray.put("Length of password is less or equal to 8.");
+                }
+                if (!digitsPatter.matcher(isValidPassword).matches()) {
+                    logger.info("Password does not contain digit.");
+                    jsonObject.put("counter", ++counter);
+                    jsonArray.put("Password does not contain a digit.");
+                }
+            }else{
+                logger.info("Password does not contain a lowercase character.");
+                counter = 3;
+                jsonObject.put("counter", 3);
+                jsonArray.put("Password does not contain a lowercase character.");
             }
         }else{
             counter=3;
