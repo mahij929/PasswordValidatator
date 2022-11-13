@@ -10,4 +10,9 @@ class PasswordValidatorApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void main(){
+        PasswordValidatorApplication.main(new String[] {});
+    }
+
 }
