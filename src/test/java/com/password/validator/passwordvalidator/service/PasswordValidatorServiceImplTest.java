@@ -46,4 +46,16 @@ class PasswordValidatorServiceImplTest {
         assert (passwordResponse.getStatus().is4xxClientError());
         assert (passwordResponse.getMessage().contains("Password does not contain a digit"));
     }
+
+    @Test
+    void validatePasswordNoLowerCase(){
+        String noLowercasePassword = "HELL00000000";
+
+        PasswordResponse passwordResponse = passwordValidatorService.validatePasswordService(noLowercasePassword);
+
+        System.out.println(passwordResponse.toString());
+
+        assert (passwordResponse.getStatus().is4xxClientError());
+        assert (passwordResponse.getMessage().contains("Password does not contain a lowercase character"));
+    }
 }
