@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
 
@@ -18,6 +20,9 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
     public PasswordResponse validatePasswordService(String isValidPassword) {
 
         logger.info("Password to Validate is : {}", isValidPassword);
+
+        String digitRegex = "^.*(?=.*[0-9])+.*$";
+        Pattern digitsPatter = Pattern.compile(digitRegex);
 
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
@@ -33,18 +38,24 @@ public class PasswordValidatorServiceImpl implements PasswordvalidatorService {
                 logger.info("Size of password is : {}", isValidPassword.length());
                 jsonObject.put("counter", ++counter);
                 jsonArray.put("Length of password is less or equal to 8.");
+            }if (!digitsPatter.matcher(isValidPassword).matches()) {
+                logger.info("Digit Value {}" ,String.valueOf(digitsPatter.matcher(isValidPassword).matches()));
+                jsonObject.put("counter", ++counter);
+                jsonArray.put("Password does not contain a digit");
             }
         }else{
+            counter=3;
             logger.info("Input is empty");
             jsonObject.put("counter", 3);
             jsonArray.put("Password can not be empty");
         }
 
-        if(jsonArray.length()==0){
-            passwordResponse.setMessage("Password Accepted");
-        }else{
+        if(counter>=2) {
             passwordResponse.setStatus(HttpStatus.BAD_REQUEST);
+            jsonObject.put("data",jsonArray.toString());
             passwordResponse.setMessage(jsonArray.toString());
+
+            return passwordResponse;
         }
 
         return passwordResponse;
